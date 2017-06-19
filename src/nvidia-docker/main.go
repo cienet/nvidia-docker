@@ -11,7 +11,6 @@ import (
 	"runtime/debug"
 
 	"github.com/NVIDIA/nvidia-docker/src/docker"
-	"github.com/NVIDIA/nvidia-docker/src/nvidia"
 )
 
 var (
@@ -75,13 +74,10 @@ func main() {
 			var nargs []string
 			var err error
 
+			fmt.Printf("NVIDIA Docker: %s\n\n", Host)
 			if Host != nil {
 				nargs, err = GenerateRemoteArgs(opt, vols)
 			} else {
-				assert(nvidia.LoadUVM())
-				assert(nvidia.Init())
-				nargs, err = GenerateLocalArgs(opt, vols)
-				nvidia.Shutdown()
 			}
 			assert(err)
 			args = append(args[:off], append(nargs, args[off:]...)...)
